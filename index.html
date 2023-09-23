@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>title</title>
+</head>
+
+<body>
+    <h1>Un titulo de precios</h1>
+    <button onclick="peticionDatos()">Haga click</button>
+
+    <div id="respuesta">
+
+    </div>
+
+    <button onclick="datosStats()">Estadistica</button>
+
+    <div>
+        <canvas id="myChart"></canvas>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        async function peticionDatos() {
+            const peticion = await fetch("http://localhost:8000/templates/prices.json");
+            const respuesta = await peticion.json()
+            let htmlRespuesta = "<div>";
+
+            for (const property in respuesta.Coins) {
+                htmlRespuesta += `<p id="${property}">${property}: ${respuesta.Coins[property]}</p> <br>`;
+            }
+            htmlRespuesta += "</div>";
+            document.getElementById("respuesta").innerHTML = htmlRespuesta
+        }
+
+        // async function peticionDatos() {
+        //     const peticion = await fetch("http://localhost:8000/templates/prices.json");
+        //     const respuesta = await peticion.json()
+        //     const array = [];
+        //     for (const property in respuesta.Coins) {
+        //         array.push(respuesta.Coins[property]);
+        //     }
+        //     return array;
+        // }
+
+        
+
+        console.log(peticion)
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['CNY', 'EUR', 'RUB', 'TRY', 'USD'],
+                datasets: [{
+                    label: 'Coin',
+                    data: [
+                        
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
